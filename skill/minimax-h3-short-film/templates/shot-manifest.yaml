@@ -1,0 +1,112 @@
+film:
+  title: ""
+  target_duration_seconds: 300
+  aspect_ratio: "16:9"
+  draft_resolution: [736, 416]
+  delivery_resolution: [1920, 1080]
+  fps: 24
+  dialogue_language: "English"
+  score_strategy: "shared score added during edit"
+  workflow_baseline:
+    mode: "REF2VA"
+    model: ""
+    lora: ""
+    sampler: ""
+    steps: 6
+    frames: 362
+
+references:
+  characters: []
+  wardrobes: []
+  environments: []
+  props: []
+
+shots:
+  - shot: 1
+    title: ""
+    story_purpose: ""
+    duration_seconds: 15
+
+    continuity:
+      incoming_frame_reference: null
+      incoming_state: ""
+      outgoing_frame_artifact: ""
+      outgoing_state: ""
+      boundary_classification: "needs reference" # match | planned cut | needs reference
+      planned_transition: ""
+      head_handle_seconds: 1.0
+      tail_handle_seconds: 1.0
+
+    camera:
+      start_position: ""
+      end_position: ""
+      movement: ""
+      entry_screen_direction: ""
+      exit_screen_direction: ""
+
+    cast:
+      visible_cast_count: 0
+      allowed_cast: []
+      absent_cast: []
+      staging: ""
+      anti_duplication: >-
+        Exactly the declared number of visible people. One physical instance
+        of each allowed character. No duplicates, clones, twins, doubles,
+        ghost copies, extra bodies, repeated faces, mirrored duplicates, or
+        background versions. No reflections, screens, photographs, or
+        holograms containing people unless explicitly allowed.
+
+    props:
+      incoming_state: []
+      outgoing_state: []
+      canonical_reference_ids: []
+      newly_discovered_artifacts_to_create: []
+
+    action:
+      beats:
+        - time: "0-1s"
+          description: "stable opening handle"
+        - time: "1-13.5s"
+          description: "main action"
+        - time: "13.5-15s"
+          description: "stable ending handle or transition"
+
+    audio:
+      expected_dialogue: []
+      incoming_ambience: ""
+      outgoing_ambience: ""
+      effects: []
+      music_state_in: "none"
+      music_state_out: "none"
+      shared_score_cue: ""
+
+    render:
+      workflow_mode: "REF2VA"
+      workflow_json: ""
+      prompt_file: ""
+      seed: null
+      resolution: [736, 416]
+      frames: 362
+      fps: 24
+      steps: 6
+      lora: ""
+      sampler: ""
+      status: "planned"
+      prompt_id: null
+      output_path: ""
+      elapsed_seconds: null
+
+    qc:
+      technical_valid: false
+      playback_reviewed: false
+      transcript: ""
+      detected_language: ""
+      dialogue_matches_prompt: null
+      duplicate_people_timecodes: []
+      identity_drift_timecodes: []
+      physics_errors_timecodes: []
+      prop_drift_timecodes: []
+      audio_artifacts_timecodes: []
+      music_cut_issues: []
+      approved: false
+      notes: ""

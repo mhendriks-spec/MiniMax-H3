@@ -1,0 +1,206 @@
+{
+  "1001": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "minimax_h3_ref2va_pruned_int8_convrot.safetensors",
+      "weight_dtype": "default"
+    }
+  },
+  "1002": {
+    "class_type": "MiniMaxH3TurboLoRA",
+    "inputs": {
+      "model": [
+        "1001",
+        0
+      ],
+      "lora_name": "minimax_h3_turbo_v4_step600_ema.safetensors",
+      "strength": 1.0,
+      "low_vram": false
+    }
+  },
+  "1003": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+      "type": "minimax",
+      "device": "default"
+    }
+  },
+  "1004": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "minimax_h3_video_vae_fp16.safetensors"
+    }
+  },
+  "1005": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "minimax_h3_audio_vae_fp32.safetensors"
+    }
+  },
+  "1006": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "01_lyra_voss.png"
+    }
+  },
+  "1007": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "02_ren_ito.png"
+    }
+  },
+  "1008": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "03_sera_kade.png"
+    }
+  },
+  "1009": {
+    "class_type": "MiniMaxH3ReferenceToVideo",
+    "inputs": {
+      "clip": [
+        "1003",
+        0
+      ],
+      "vae": [
+        "1004",
+        0
+      ],
+      "audio_vae": [
+        "1005",
+        0
+      ],
+      "prompt": "Photorealistic premium cinematic science-fiction, coherent anatomy and motion, restrained production design. Use <Picture 1>, <Picture 2>, and <Picture 3> only as identity and wardrobe references. Whenever a referenced person appears, preserve that exact face, hair, body, clothing colors, scars, tattoos, and mechanical limbs. Never swap identities or costumes. All spoken dialogue and vocal performances must be in natural English only, with no German or other languages. Create a continuous final 15-second cinematic science-fiction shot at 24 fps, 736x416 inside the now-stable Aster Vale cockpit resting above a moon transformed by green auroras and spreading luminous valleys. Picture 1 is Commander Lyra Voss, the same Black woman in her early 30s with silver side-braids, thin scar over her right eyebrow, and unchanged navy pressure suit with burnt-orange shoulder stripe, standing at the center window. Picture 2 is Engineer Ren Ito, the same East Asian man in his early 40s with short black hair, subtle stubble, mechanical left forearm, and unchanged off-white/teal technical suit, standing to her left. Picture 3 is Scout Sera Kade, the same pale freckled woman in her late 20s with auburn bob, green eyes, triangular tattoo beneath her left eye, and unchanged charcoal exploration suit with cyan seam lights, standing to Lyra’s right. Keep all three identities and clothing perfectly consistent. From 0–5s, slowly push toward the three as warm green dawn light reaches their faces; from 5–10s, a tiny luminous seed drifts through an open interior vent and lands gently in Sera’s gloved palm; from 10–13s, it opens into two delicate leaves while Ren smiles and Lyra’s eyes fill with restrained relief; from 13–15s, rise past their shoulders to frame the living moon beyond the glass. Native stereo audio: restored quiet airflow, delicate leaf chime at center, distant wind and faint birdsong emerging outside, warm concluding strings resolving softly. Lyra says, “We are not alone.” No subtitles, readable text, logos, extra people, gore, identity changes, or camera cuts.",
+      "width": 736,
+      "height": 416,
+      "length": 362,
+      "ref_image_size": "match",
+      "ref_images.ref_image_0": [
+        "1006",
+        0
+      ],
+      "ref_images.ref_image_1": [
+        "1007",
+        0
+      ],
+      "ref_images.ref_image_2": [
+        "1008",
+        0
+      ]
+    }
+  },
+  "1010": {
+    "class_type": "RandomNoise",
+    "inputs": {
+      "noise_seed": 73130681
+    }
+  },
+  "1011": {
+    "class_type": "BasicGuider",
+    "inputs": {
+      "model": [
+        "1002",
+        0
+      ],
+      "conditioning": [
+        "1009",
+        0
+      ]
+    }
+  },
+  "1012": {
+    "class_type": "MiniMaxH3TurboSampler",
+    "inputs": {}
+  },
+  "1013": {
+    "class_type": "BasicScheduler",
+    "inputs": {
+      "model": [
+        "1002",
+        0
+      ],
+      "scheduler": "simple",
+      "steps": 6,
+      "denoise": 1.0
+    }
+  },
+  "1014": {
+    "class_type": "SamplerCustomAdvanced",
+    "inputs": {
+      "noise": [
+        "1010",
+        0
+      ],
+      "guider": [
+        "1011",
+        0
+      ],
+      "sampler": [
+        "1012",
+        0
+      ],
+      "sigmas": [
+        "1013",
+        0
+      ],
+      "latent_image": [
+        "1009",
+        1
+      ]
+    }
+  },
+  "1015": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "1014",
+        0
+      ],
+      "vae": [
+        "1004",
+        0
+      ]
+    }
+  },
+  "1016": {
+    "class_type": "VAEDecodeAudio",
+    "inputs": {
+      "samples": [
+        "1014",
+        0
+      ],
+      "vae": [
+        "1005",
+        0
+      ]
+    }
+  },
+  "1017": {
+    "class_type": "CreateVideo",
+    "inputs": {
+      "images": [
+        "1015",
+        0
+      ],
+      "audio": [
+        "1016",
+        0
+      ],
+      "fps": 24.0,
+      "bit_depth": 8
+    }
+  },
+  "1018": {
+    "class_type": "SaveVideo",
+    "inputs": {
+      "video": [
+        "1017",
+        0
+      ],
+      "filename_prefix": "video/scifi_5min/shot_20",
+      "format": "mp4",
+      "codec": "auto"
+    }
+  }
+}
